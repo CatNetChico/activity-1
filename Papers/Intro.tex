@@ -1,0 +1,69 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\title{Networking Club Activity 2: STP vs. RSTP Performance Analysis}
+\author{Networking Club}
+\date{March 2, 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+Today we are reviewing a research paper comparing the performance of \textbf{Spanning Tree Protocol (STP)} and \textbf{Rapid Spanning Tree Protocol (RSTP)} via Cisco simulation. This activity aligns with our core club goals: research review, professional certification preparation, and hands-on laboratory experience.
+
+\section{Background: Switching and Loop Prevention}
+The primary purpose of a switch is to facilitate data sharing between devices within a Local Area Network (LAN). Switches operate using a specific logic:
+\begin{enumerate}
+    \item Store the receiver's address.
+    \item Check the address table for the receiver.
+    \item If the receiver is unknown, \textbf{broadcast} the message to all ports.
+\end{enumerate}
+
+In a redundant (loop) topology, these broadcasts can circulate infinitely, resulting in a \textbf{broadcast storm}. To prevent network collapse, we use protocols like STP and RSTP to build a logical "tree" topology, ensuring only one active path exists between any two nodes.
+
+\subsection{The Election Process}
+During initialization, switches exchange \textbf{Bridge Protocol Data Units (BPDUs)}. They "shout" their Bridge ID, which is a combination of a configurable \textbf{Priority ID} and the hardware \textbf{MAC ID}. The switch with the lowest value is elected as the \textbf{Root Bridge}—the "brain" of the network.
+
+\subsection{STP vs. RSTP}
+\begin{itemize}
+    \item \textbf{STP (Legacy):} Uses a one-way communication model. The Root Bridge dictates the topology, and timers are used to detect failures. Convergence is slow because the switch must "wait and think" before transitioning states.
+    \item \textbf{RSTP (Modern):} Uses a two-way handshake. Switches actively share topology information. If a "hello" message is missed, neighbors immediately communicate to synchronize a new topology. This results in significantly faster convergence at the cost of constant background communication.
+\end{itemize}
+
+\section{Critical Review of Existing Research}
+The paper we are reviewing calculates packet loss percentages. However, it suffers from several flaws:
+\begin{itemize}
+    \item \textbf{Small Sample Size:} Conclusions are based on a limited number of pings.
+    \item \textbf{Obvious Findings:} It attempts to "prove" RSTP is better than STP, which is an industry standard (akin to proving a wheel rolls better than a block).
+\end{itemize}
+\textbf{Note:} This is an example of research that lacks the rigor required for citation. Today, we will fix these flaws by gathering real-world data from physical hardware.
+
+\section{Today's Lab: PVST+ and RPVST+}
+In our experiment, we will utilize \textbf{Per-VLAN Spanning Tree (PVST+)} and \textbf{Rapid PVST+}. 
+\begin{quote}
+    \textit{Note:} Since we are working within a single VLAN today, these will behave like STP and RSTP. A \textbf{VLAN} virtually splits a physical switch into multiple logical switches to contain broadcast domains.
+\end{quote}
+
+\section{Collaborative Technical White Paper}
+We will synthesize our findings into a benchmarking report. To credit everyone’s work, we are using a tiered contribution model:
+\begin{itemize}
+    \item \textbf{Technical Contributors:} Execute the lab and submit verified datasets.
+    \item \textbf{Lead Authors:} Draft the analysis, results, and narrative.
+    \item \textbf{Peer Reviewers:} Edit text and verify calculations via GitHub.
+\end{itemize}
+The final report will be published on GitHub/Discord, providing a permanent link for your \textbf{Resume or LinkedIn}.
+
+\section{Activity Instructions}
+Please refer to the lab guide in the Discord resource section. Advanced challenges include:
+\begin{enumerate}
+    \item \textbf{Automation:} Automate the initial switch configurations.
+    \item \textbf{Optimization:} Analyze the diagram to manually set priorities and compare them against our collected results.
+\end{enumerate}
+
+Raquel is available at A and B decks to demonstrate physical wiring and diagram interpretation.
+
+\end{document}

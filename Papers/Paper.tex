@@ -1,0 +1,74 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\title{\textbf{Quantifying Layer 2 Convergence: A Comparative Performance Analysis of PVST+ and Rapid PVST+ in Redundant Cisco Topologies}}
+
+\author{
+    \textbf{Lead Author/Editor:} [Name] \\
+    \textbf{Co-Authors:} [Names] \\
+    \textit{Network Engineering Research Group}
+}
+
+\date{March 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This paper investigates the performance differences between legacy Per-VLAN Spanning Tree Plus (PVST+) and Rapid PVST+ (802.1w) within a physical Cisco switching environment. While theoretical models suggest a significant reduction in convergence time, this study seeks to quantify that downtime through empirical packet-loss data. By simulating link failures in a redundant triangle topology, we analyze the impact of protocol tuning on network availability and professional infrastructure reliability.
+\end{abstract}
+
+\section{Introduction}
+Modern local area networks (LANs) require high availability, often achieved through physical link redundancy. However, without a loop-prevention mechanism, redundant paths result in broadcast storms. 
+
+
+
+The Spanning Tree Protocol (STP) prevents these loops by strategically blocking ports. This research critiques previous amateur-level simulations and provides high-fidelity data gathered from physical hardware to determine if the transition to Rapid-STP is mandatory for modern enterprise standards.
+
+\section{Methodology}
+The experimental setup consisted of three Cisco switches wired in a redundant triangle topology. 
+
+
+
+\subsection{Environment Setup}
+\begin{itemize}
+    \item \textbf{Hardware:} 3x Cisco Catalyst Switches, 2x Linux End-Hosts.
+    \item \textbf{Metric:} ICMP Echo Request/Reply loss using $ping -O$.
+    \item \textbf{Variables:} We tested convergence under three conditions: Default PVST+, Rapid PVST+, and Optimized Rapid PVST+ with manual Root Bridge priority.
+\end{itemize}
+
+\section{Data and Results}
+The following table represents the raw data collected during the "Link Cut" simulations.
+
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Protocol} & \textbf{Packets Sent} & \textbf{Packets Lost} & \textbf{Downtime (s)} \\ \midrule
+PVST+ (Legacy)    & 100 & [X] & $\approx 50s$ \\
+Rapid PVST+       & 100 & [Y] & $\approx 2s$ \\
+Optimized R-PVST+ & 100 & [Z] & $< 1s$ \\ \bottomrule
+\end{tabular}
+\end{center}
+
+\section{Analysis}
+
+
+Conversely, the Rapid PVST+ handshake mechanism allows for nearly instantaneous transition by utilizing the \textit{Proposal/Agreement} process on point-to-point links.
+
+\section{Conclusion}
+Our findings confirm that legacy STP is insufficient for modern real-time traffic (VoIP, Video). Furthermore, we proved that manual Root Bridge selection is critical to prevent non-deterministic traffic paths. This activity serves as a baseline for future research into Link Aggregation (EtherChannel) and Layer 3 redundancy.
+
+\section*{Author Contributions \& Acknowledgments}
+\begin{itemize}
+    \item \textbf{Co-Authors:} [Names] - Contributed to data analysis, technical writing, and critique.
+    \item \textbf{Contributors:} [Names] - Conducted physical lab setup, wiring, and data collection.
+    \item \textbf{Editors:} [Names] - Final technical review and formatting.
+    \item \textbf{Acknowledgments:} We thank the club members who provided feedback during the Phase 1 "Stop \& Think" sessions.
+\end{itemize}
+
+\end{document}
