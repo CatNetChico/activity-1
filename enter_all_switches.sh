@@ -3,7 +3,6 @@
 # Define the switch IP addresses
 SWITCHES=("10.12.100.13" "10.12.100.13" "10.12.100.13")
 PORTS=("2003" "2004" "2011")
-PASSWORD="chico"
 
 for i in "${!SWITCHES[@]}"; do
     IP=${SWITCHES[$i]}
@@ -27,29 +26,17 @@ for i in "${!SWITCHES[@]}"; do
 
     expect {
         -re ":" {
-            send "$PASSWORD\r"
+            send "chico\r"
             exp_continue
         }
         -re ">" {
-            send "enable\r"
-            exp_continue
-        }
-        -re "#" {
-            send "configure terminal\r"
+            send "?\r"
         }
         timeout {
             send "\r"
             exp_continue
         }
     }
-
-
-
-
-
-
-
-
 
     expect "#"
     send "exit\r"
