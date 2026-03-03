@@ -1,31 +1,45 @@
-\documentclass[11pt]{article}\usepackage[utf8]{inputenc}
+\documentclass[11pt]{article}
+
+% --- Essential Packages ---
+\usepackage[utf8]{inputenc}
 \usepackage[margin=1in]{geometry}
 \usepackage{titlesec}
 \usepackage{enumitem}
 \usepackage{graphicx}
-\usepackage{xcolor}
 \usepackage{booktabs} 
 \usepackage{amsmath}  
+\usepackage{xcolor}
 \usepackage{hyperref}
-% Custom formatting for sections
-\titleformat{\section}{\large\bfseries\color{blue!70!black}}{}{0em}{}[\titlerule]
+
+% --- Section Styling (Matching Style Guide) ---
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
 \titleformat{\subsection}{\normalsize\bfseries\itshape}{}{0em}{}
-\usepackage{hyperref}
+
+% --- Header and Footer ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % Clear all header and footer fields
+\fancyhead[L]{CatNet}
+\fancyhead[C]{Activity 1}
+\fancyhead[R]{Spring 2026}
+\renewcommand{\headrulewidth}{0.4pt} % Sets the line thickness
+
 \hypersetup{
     pdfborder={0 0 0}
 }
+
 \begin{document}
 
 \begin{center}
     \huge \textbf{Lab Activity: Surviving the Storm} \\
-    \Large \textit{PVST+ vs. Rapid PVST+ Convergence} \\
+    \large \textit{PVST+ vs. Rapid PVST+ Convergence} \\
     \vspace{0.5em}
     \small \textbf{Module: CCNA Domain 2.0 - Network Access}
 \end{center}
 
 \vspace{1em}
 
-\section*{Scenario Overview}
+\section{Scenario Overview}
 You are a junior network engineer for a growing enterprise. Redundancy is critical: if a cable gets cut by a careless contractor, you need another path available so the business stays online. However, physically connecting switches in a loop creates a catastrophic problem: \textbf{Broadcast Storms}. 
 
 \begin{figure}[ht]
@@ -54,12 +68,7 @@ Without a loop-prevention mechanism, broadcast frames circulate endlessly, multi
 Wire your three switches into a physical triangle (loop) and connect your PCs according to the topology diagram and addressing tables below.
 
 \begin{center}
-
-%  topology diagram here
-\begin{center}
     \includegraphics[width=0.5\textwidth]{diagram}
-\end{center}
-
 \end{center}
 
 \vspace{0.5em}
@@ -81,7 +90,7 @@ H & 10.12.50.108 & 10.12.50.208 & O & 10.12.50.115 & 10.12.50.215 \\ \bottomrule
 \end{center}
 
 \vspace{0.5em}
-\noindent\textbf{Swich Address:}
+\noindent\textbf{Switch Address:}
 \begin{center}
 \begin{tabular}{@{}cccc@{}}
 \toprule
@@ -90,50 +99,38 @@ A & 1 & 10.12.100.9 & 2003\\
 A & 2 & 10.12.100.9 & 2004\\
 B & 1 & 10.12.100.9 & 2011\\
 B & 2 & 10.12.100.9 & 2012\\
-
 D & 1 & 10.12.100.10 & 2003\\
 D & 2 & 10.12.100.10 & 2004\\
 E & 1 & 10.12.100.10 & 2011\\
 E & 2 & 10.12.100.10 & 2012\\
-
 F & 1 & 10.12.100.11 & 2003\\
 F & 2 & 10.12.100.11 & 2004\\
 G & 1 & 10.12.100.11 & 2011\\
 G & 2 & 10.12.100.11 & 2012\\
 H & 1 & 10.12.100.11 & 2019\\
 H & 2 & 10.12.100.11 & 2020\\
-
- \bottomrule
-
-
+\bottomrule
 \end{tabular}
 \quad
 \begin{tabular}{@{}cccc@{}}
 \toprule
 \textbf{Desk} & \textbf{Switch \#} & \textbf{ID Address} & Port \\ \midrule
-
 I & 1 & 10.12.100.12 & 2003\\
 I & 2 & 10.12.100.12 & 2004\\
 J & 1 & 10.12.100.12 & 2011\\
 J & 2 & 10.12.100.12 & 2012\\
-
 K & 1 & 10.12.100.13 & 2003\\
 K & 2 & 10.12.100.13 & 2004\\
 L & 1 & 10.12.100.13 & 2011\\
 L & 2 & 10.12.100.13 & 2012\\
 M & 1 & 10.12.100.13 & 2019\\
 M & 2 & 10.12.100.13 & 2020\\
-
 N & 1 & 10.12.100.14 & 2003\\
 N & 2 & 10.12.100.14 & 2004\\
 O & 1 & 10.12.100.14 & 2011\\
 O & 2 & 10.12.100.14 & 2012\\
-
- \bottomrule
-
-
+\bottomrule
 \end{tabular}
-
 \end{center}
 
 \noindent\textbf{Linux PC Initialization (Run on PC1, PC2, and PC3):}
@@ -157,7 +154,7 @@ By default, older Cisco switches might run standard IEEE 802.1D STP (or PVST+). 
 \]
 
 \noindent\fbox{
-    \parbox{\textwidth}{
+    \parbox{0.96\textwidth}{
         \textbf{Access Note:} If prompted for a password to enter privileged mode, use: \texttt{chico}
     }
 }
@@ -213,10 +210,7 @@ Run the ping command from PC1 again: \texttt{ping -O -c 100 <PC2\_IP>}. \\
 \section{Phase 4: Network Engineering (Tuning the Tree)}
 By default, switches elect the Root Bridge based on the lowest MAC address. This means your oldest, slowest switch might accidentally become the core of your network. \textbf{We must dictate the topology manually.}
 
-\begin{center}
-
-\end{center}
-
+\vspace{1em}
 Additionally, ports connected to PCs don't create loops. We can use \texttt{portfast} to tell the switch to skip the STP handshake entirely on edge ports, bringing them up instantly.
 
 \noindent\textbf{1. Force Switch 1 to be the Primary Root:}
@@ -244,23 +238,30 @@ Additionally, ports connected to PCs don't create loops. We can use \texttt{port
     }
 }
 
-
 \subsection*{Test 3: The Optimized Network}
 Reconnect all cables. Wait for stability. Run your ping test one final time and cut the active link. Because you have optimized the Root Bridge location and edge ports, your failover should be incredibly efficient.
 
 \vspace{1em}
 \noindent\textbf{Bonus Automation Challenge:} 
-In the CCNA exam, you must understand network programmability. Write a bash shell script to Telnet into all three switches and apply the \texttt{rapid-pvst} and \texttt{portfast} configurations automatically. The hints are available at \url{ https://github.com/CatNetChico/activity-1}. 
+In the CCNA exam, you must understand network programmability. Write a bash shell script to Telnet into all three switches and apply the \texttt{rapid-pvst} and \texttt{portfast} configurations automatically. The hints are available at \url{https://github.com/CatNetChico/activity-1}. 
 
+\newpage
 
-\section*{Professional Skills Translation (Resume Builder)}
-\textit{You have successfully completed a core Layer 2 engineering task. Here is how you can represent these newly acquired skills on a professional resume:}
+\section*{Appendix: Resume Building}
+\addcontentsline{toc}{section}{Appendix: Resume Building}
 
-\begin{itemize}[leftmargin=1.5em]
+\textit{After completing this lab, you have gained practical, hands-on experience with Layer 2 redundancy and convergence optimization. You can adapt the following bullet points for your resume to accurately highlight the skills you demonstrated today:}
+
+\vspace{0.5em}
+\noindent \textbf{Relevant Experience / Academic Projects:}
+\begin{itemize}[leftmargin=*, itemsep=2pt]
     \item \textbf{Layer 2 Infrastructure Optimization:} Migrated legacy Spanning Tree topologies to \textbf{IEEE 802.1w (RSTP)}, reducing link-failure convergence time from 50 seconds to sub-2-second intervals.
     \item \textbf{Network Stability \& High Availability:} Engineered deterministic Layer 2 traffic flows by manually calculating and assigning \textbf{Root Bridge} and Secondary Root Bridge priorities.
     \item \textbf{Edge Port Tuning:} Deployed \textbf{PortFast} on edge access ports to eliminate DHCP timeout issues and transition delays while preventing \textbf{Broadcast Storms}.
     \item \textbf{Disaster Simulation \& Benchmarking:} Utilized continuous ICMP packet analysis to quantify network downtime and validate failover mechanisms during physical hardware loss.
 \end{itemize}
+
+\vspace{1em}
+\noindent \textbf{Core Skills Acquired:} Layer 2 Switching, Spanning Tree Protocol (STP/RSTP), High Availability Design, Network Benchmarking, Cisco IOS Configuration.
 
 \end{document}
